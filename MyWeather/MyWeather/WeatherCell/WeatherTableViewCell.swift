@@ -13,11 +13,10 @@ class WeatherTableViewCell: UITableViewCell {
     @IBOutlet var highTempLabel: UILabel!
     @IBOutlet var lowTempLabel: UILabel!
     @IBOutlet var precipSumLabel: UILabel!
-    // @IBOutlet var iconImageView: UIImageView!
+    @IBOutlet var iconImageView: UIImageView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        backgroundColor = .gray
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -33,11 +32,17 @@ class WeatherTableViewCell: UITableViewCell {
     }
     
     func configure(with model: DailyWeatherViewModel) {
+        self.lowTempLabel.textAlignment = .center
+        self.highTempLabel.textAlignment = .center
+        
         self.lowTempLabel.text = "\(model._temperature_2m_min)°"
         self.highTempLabel.text = "\(model._temperature_2m_max)°"
         self.precipSumLabel.text = "\(model._precipitation_sum)mm"
         self.dayLabel.text = getDayForDate(getDateFromTimeData(model._time))
-        // self.iconImageView.image =
+        
+        let weatherCodeLegend = WeatherCodeLegend()
+        self.iconImageView.image = weatherCodeLegend.getImageFromWeatherCode(model._weathercode)
+        self.iconImageView.contentMode = .scaleAspectFit
     }
     
     func getDateFromTimeData(_ timeStr: String?) -> Date? {
